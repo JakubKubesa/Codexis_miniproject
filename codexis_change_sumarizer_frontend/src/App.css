@@ -7,7 +7,7 @@ html, body {
 }
 
 
-/* Globální nastavení */
+/* global settings */
 .App {
   text-align: center;
   font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@ html, body {
 }
 
 
-/* Tabulka zákonů */
+/* Law table */
 .laws-table {
   width: 100%;
   border-collapse: collapse;
@@ -63,7 +63,8 @@ html, body {
   background-color: #b6babb;
 }
 
-/* Detail zákona */
+
+
 .law-detail {
   padding: 1rem;
   border: 1px solid #ccc;
@@ -90,7 +91,7 @@ html, body {
 }
 
 
-/* Tlačítka */
+/* buttons */
 button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -107,7 +108,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* Mobilní responzivita */
+/* mobil responsivity */
 @media (max-width: 600px) {
   .laws-table th, .laws-table td {
     padding: 0.5rem;
@@ -121,7 +122,7 @@ button:hover {
 
 
 
-/* Všechny formuláře */
+/* all forms */
 form {
   background: #a8e4b9;
   padding: 1.5rem;
@@ -132,7 +133,7 @@ form {
   text-align: left;
 }
 
-/* Popisky */
+
 form label {
   display: block;
   font-weight: bold;
@@ -140,7 +141,6 @@ form label {
   color: #333;
 }
 
-/* Vstupy, textová pole, select */
 form input,
 form textarea,
 form select {
@@ -166,7 +166,7 @@ form select:focus {
 
 
 
-/* Detail zákona */
+/* Detail laws */
 .law-detail {
   padding: 1.5rem;
   margin: 2rem auto;
@@ -199,4 +199,83 @@ form select:focus {
   background-color: #fff8dc;
   border: 1px dashed #999;
   border-radius: 6px;
+}
+
+
+
+/* Delete btn */
+.delete-btn {
+  background-color: #ff4d4f; 
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  padding: 6px 10px;
+  margin: 5px 8px;
+  font-size: 1rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.delete-btn:hover {
+  background-color: #d9363e; 
+}
+
+.delete-btn:active {
+  transform: scale(0.95); 
+}
+
+/*Buttons*/
+.top-buttons {
+  display: flex;
+  justify-content: space-between; 
+  margin-bottom: 1rem;
+}
+
+.top-buttons button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: #c97d26;
+  transition: background-color 0.2s;
+}
+
+.top-buttons button:hover {
+  background-color: #e0bb74;
+}
+
+
+/* Kategory list*/
+.categories-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #c9c7c7;
+}
+
+.category-name {
+  flex: 1;
+  text-align: left;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #c22f1e;
 }

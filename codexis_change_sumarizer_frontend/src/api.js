@@ -61,3 +61,15 @@ export async function deleteCategory(id) {
   });
   if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 }
+
+
+export async function getNotifications() {
+  const res = await fetch("http://localhost:8080/api/notifications");
+  return res.json();
+}
+
+export async function deleteNotification(id) {
+  await fetch(`http://localhost:8080/api/notifications/${id}`, {
+    method: "DELETE",
+  });
+}

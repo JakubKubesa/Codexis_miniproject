@@ -29,7 +29,7 @@ export default function CategoriesPage({ onBack }) {
   };
 
   return (
-    <div className="categories-page">
+    <div className="App">
       <h2>Kategorie</h2>
 
       <form onSubmit={handleAdd} className="form-container">
@@ -50,10 +50,10 @@ export default function CategoriesPage({ onBack }) {
 
       <ul className="categories-list">
         {categories.map((c) => (
-          <li key={c.id}>
-            {c.name}{" "}
+          <li key={c.id} className="category-item">
+            <span className="category-name">{c.name}</span>
             <button onClick={() => handleDelete(c.id)} className="delete-btn">
-              🗑
+              Delete
             </button>
           </li>
         ))}

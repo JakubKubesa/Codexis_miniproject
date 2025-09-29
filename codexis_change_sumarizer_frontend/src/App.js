@@ -3,12 +3,14 @@ import { getLaws, createLaw, createLawVersion } from "./api";
 import AddLaw from "./components/AddLaw";
 import ViewLaws from "./components/ViewLaws";
 import CategoriesPage from "./components/CategoriesPage";
+import NotificationsPage from "./components/NotificationsPage";
 
 import "./App.css";
 
 export default function App() {
   const [laws, setLaws] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     fetchLaws();
@@ -41,10 +43,20 @@ export default function App() {
     return <CategoriesPage onBack={() => setShowCategories(false)} />;
   }
 
+  if (showNotifications) {
+    return <NotificationsPage onBack={() => setShowNotifications(false)} />;
+  }
+
+
   return (
     <div className="App">
       <h1>Zákony</h1>
-      <button onClick={() => setShowCategories(true)}>📂 Kategorie</button>
+
+      <div className="top-buttons">
+        <button onClick={() => setShowCategories(true)}>📂 Kategorie</button>
+        <button onClick={() => setShowNotifications(true)}>🔔 Upozornění</button>
+      </div>
+
       <AddLaw laws={laws} onLawAdded={handleLawAdded} />
 
       <h2 className="seznamZakonu">Seznam zákonů</h2>
