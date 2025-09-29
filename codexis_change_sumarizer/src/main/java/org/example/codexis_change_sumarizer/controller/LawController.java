@@ -5,11 +5,15 @@ import org.example.codexis_change_sumarizer.dto.DiffResponse;
 import org.example.codexis_change_sumarizer.model.Law;
 import org.example.codexis_change_sumarizer.repository.LawRepository;
 import org.example.codexis_change_sumarizer.service.AiDiffService;
+import org.example.codexis_change_sumarizer.service.CategoryMatchService;
 import org.example.codexis_change_sumarizer.service.LawService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/laws")
@@ -19,11 +23,16 @@ public class LawController {
     private final LawService lawService;
     private final AiDiffService aiDiffService;
 
-    public LawController(LawRepository lawRepository, LawService lawService, AiDiffService aiDiffService) {
+    private final CategoryMatchService categoryMatchService;
+
+    public LawController(LawRepository lawRepository,LawService lawService,AiDiffService aiDiffService, CategoryMatchService categoryMatchService
+    ) {
         this.lawRepository = lawRepository;
         this.lawService = lawService;
         this.aiDiffService = aiDiffService;
+        this.categoryMatchService = categoryMatchService;
     }
+
 
 
     //ai response
@@ -33,7 +42,6 @@ public class LawController {
                 .orElseThrow(() -> new RuntimeException("Law not found"));
 
         if (law.getOriginalId() == null) {
-            // Pokud zákon nemá předka, vrátíme prázdné shrnutí
             return Mono.just(new DiffResponse("Tento zákon nemá žádnou předchozí verzi."));
         }
 
@@ -58,18 +66,35 @@ public class LawController {
 
     //add + upd + del
     @PostMapping
-    public Law createLaw(@RequestBody Law law) {
+    public ResponseEntity<?> createLaw(@RequestBody Law law) {
         if (law.getOriginalId() == null) {
             law.setState(Law.State.NEW);
         }
-        return lawRepository.save(law);
-    }
+        Law savedLaw = lawRepository.save(law);
 
+        categoryMatchService.analyzeLawCategories(savedLaw);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("law", savedLaw);
+        response.put("matchedCategories", List.of());
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/version")
-    public Law createNewVersion(@RequestBody Law law) {
-        return lawService.addNewVersion(law.getTitle(), law.getContent(), law.getOriginalId());
+    public ResponseEntity<?> createNewVersion(@RequestBody Law law) {
+        Law savedLaw = lawService.addNewVersion(law.getTitle(), law.getContent(), law.getOriginalId());
+
+        categoryMatchService.analyzeLawCategories(savedLaw);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("law", savedLaw);
+        response.put("matchedCategories", List.of());
+
+        return ResponseEntity.ok(response);
     }
+
+
 
     @PutMapping("/{id}")
     public Law updateLaw(@PathVariable Long id, @RequestBody Law law) {

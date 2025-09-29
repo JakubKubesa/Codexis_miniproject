@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -51,4 +52,26 @@ public class AiDiffService {
                     return new DiffResponse(first.get("content").toString());
                 });
     }
+
+    public Mono<String> simpleCheck(String prompt) {
+        return webClient.post()
+                .uri("/chat/completions")
+                .header("Authorization", "Bearer " + apiKey)
+                .bodyValue(Map.of(
+                        "model", "gpt-4o-mini",
+                        "messages", new Object[]{
+                                Map.of("role", "system", "content",
+                                        "Odpovídej pouze ANO nebo NE."),
+                                Map.of("role", "user", "content", prompt)
+                        }
+                ))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(resp -> {
+                    var choices = (List<Map<String, Object>>) resp.get("choices");
+                    var first = (Map<String, Object>) choices.get(0).get("message");
+                    return first.get("content").toString();
+                });
+    }
+
 }

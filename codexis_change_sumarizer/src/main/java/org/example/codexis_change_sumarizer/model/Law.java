@@ -15,12 +15,13 @@ public class Law {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    private State state; // NEW / OLD / EXPIRED
+    private State state;
 
-    private Long originalId; // odkaz na původní zákon (může být null)
+    private Long originalId;
 
     @Lob
     private String diffSummary;
+
     public Law() {}
 
     public Law(String title, String content, State state, Long originalId) {
